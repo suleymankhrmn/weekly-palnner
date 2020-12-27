@@ -1,26 +1,23 @@
 <script>
-    import { onMount } from "svelte";
+    import { onMount, afterUpdate  } from "svelte";
+    import { enablePlay, intervalId,totalSeconds } from "../store/store";
     import { Button, Card, CardBody } from "sveltestrap";
 
-    let time = new Date();
     let initialSeconds = 25 * 60;
-    let totalSeconds = 0;
+    
 
-    $: minutes = Math.floor((initialSeconds - totalSeconds) / 60);
-    $: seconds =
-        (totalSeconds % 60).toString().length === 1
-            ? "0" + (totalSeconds % 60).toString()
-            : totalSeconds % 60;
-
-    function convert(second) {}
-    onMount(() => {
-        const interval = setInterval(() => {
-            totalSeconds += 1;
-        }, 1000);
-        return () => {
-            clearInterval(interval);
-        };
-    });
+    $: minutes = Math.floor((initialSeconds - $totalSeconds) / 60);
+    $: seconds = convert($totalSeconds % 60);
+        
+    
+    function convert(value){
+        if(value===0)
+            return "00";
+        else if((60 - (value)).toString().length ===1)
+            return "0" + (60 - value);
+        else
+            return 60 - value;
+    } 
 </script>
 
 <style>
