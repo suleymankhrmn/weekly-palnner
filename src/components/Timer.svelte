@@ -1,14 +1,52 @@
 <script>
     import { onMount, afterUpdate  } from "svelte";
-    import { enablePlay, intervalId,totalSeconds } from "../store/store";
+    import { enablePlay, intervalId,totalSeconds, status, breakCount } from "../store/store";
     import { Button, Card, CardBody } from "sveltestrap";
+    import {Status, InitialSeconds} from "../utils/enums";
 
-    let initialSeconds = 25 * 60;
+    let initialSeconds=0
     
 
-    $: minutes = Math.floor((initialSeconds - $totalSeconds) / 60);
+    
+
+    $: minutes = minutesConvert(InitialSeconds.WORKINITSEC - $totalSeconds);
     $: seconds = convert($totalSeconds % 60);
+     
+    afterUpdate(()=>{
+        if($totalSeconds === InitialSeconds.WORKINITSEC && $status === Status.WORKING){
+            clearInterval($intervalId);
+            enablePlay.set(false);
+            totalSeconds.set(0);
+            
+            if($breakCount < 3){
+                breakCount.update(value=>value+1);
+                initialSeconds=InitialSeconds.SMALLRESTINITSEC;
+                status.set(Status.BREAK);
+            }
+            else{
+                breakCount.set(0);
+                initialSeconds=InitialSeconds.BIGRESTINITSEC;
+                status.set(Status.BIGBREAK);
+            }
+            console.log("1");     
+        }
+        else if($totalSeconds === InitialSeconds.SMALLRESTINITSEC && $status === Status.BREAK){
+            clearInterval($intervalId);
+            enablePlay.set(false);
+            totalSeconds.set(0);
+            status.set(Status.WORKING);
+            console.log("2");
+        }
+        else if($totalSeconds === InitialSeconds.BIGRESTINITSEC && $status === Status.BIGBREAK){
+            clearInterval($intervalId);
+            enablePlay.set(false);
+            totalSeconds.set(0);
+            status.set(Status.WORKING);
+            console.log("3");
+        }
+    })
         
+    
     
     function convert(value){
         if(value===0)
@@ -18,6 +56,13 @@
         else
             return 60 - value;
     } 
+
+    function minutesConvert(value){
+        if(value < 60)
+            return 0;
+        else
+            return Math.floor(value/60);
+    }
 </script>
 
 <style>
