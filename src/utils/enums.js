@@ -1,0 +1,14 @@
+export const Status ={
+    BREAK : "BREAK",
+    BIGBREAK : "BIGBREAK",
+    WORKING : "WORKING"
+}
+
+export const InitialSeconds = {
+    // WORKINITSEC:25*60,
+    // SMALLRESTINITSEC:5*60,
+    // BIGRESTINITSEC:20*60
+    WORKINITSEC:15,
+    SMALLRESTINITSEC:5,
+    BIGRESTINITSEC:10
+}
