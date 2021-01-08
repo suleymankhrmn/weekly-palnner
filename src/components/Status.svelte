@@ -1,5 +1,6 @@
 <script>
-    import { enablePlay, intervalId, totalSeconds } from "../store/store";
+    import { enablePlay, intervalId, totalSeconds, status } from "../store/store";
+    import {Status, InitialSeconds} from "../utils/enums";
     import { Row } from "sveltestrap";
     // let enablePlay = true;
     function playPauseClick() {
@@ -34,7 +35,7 @@
 
 <Row class="d-flex justify-content-center ">
     <h3>Status:</h3>
-    <h3>Working</h3>
+    <h3>{$status}</h3>
 </Row>
 
 <Row class="d-flex justify-content-center">

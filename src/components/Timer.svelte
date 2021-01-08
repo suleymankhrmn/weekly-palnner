@@ -77,6 +77,7 @@
         font-weight: bold;
         max-width: 300px;
         border-width: medium !important;
+        text-align: center;
     }
 </style>
 
